@@ -1321,8 +1321,8 @@ serverTelemetry:
     #      severity: warning
     #  - alert: vault-HighResponseTime
     #    annotations:
-    #      message: The response time of OpenBao is over 1s on average over the last 5 minutes.
+    #      message: The response time of OpenBao is over 1s on average over the last 10 minutes.
     #    expr: vault_core_handle_request{quantile="0.5", namespace="mynamespace"} > 1000
-    #    for: 5m
+    #    for: 10m
     #    labels:
     #      severity: critical
