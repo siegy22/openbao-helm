@@ -43,7 +43,7 @@ load _helpers
       --set 'server.ha.enabled=true' \
       . | tee /dev/stderr |
       yq -r '.spec.template.spec.containers[0].image' | tee /dev/stderr)
-  [ "${actual}" = "foo:1.2.3" ]
+  [ "${actual}" = "quay.io/foo:1.2.3" ]
 }
 
 @test "server/ha-StatefulSet: image tag defaults to latest" {
@@ -56,7 +56,7 @@ load _helpers
       --set 'server.ha.enabled=true' \
       . | tee /dev/stderr |
       yq -r '.spec.template.spec.containers[0].image' | tee /dev/stderr)
-  [ "${actual}" = "foo:latest" ]
+  [ "${actual}" = "quay.io/foo:latest" ]
 }
 
 #--------------------------------------------------------------------
@@ -71,7 +71,7 @@ load _helpers
       yq -r '.spec.template.spec.containers[0].env' | tee /dev/stderr)
 
   local value=$(echo $object |
-      yq -r 'map(select(.name=="VAULT_ADDR")) | .[] .value' | tee /dev/stderr)
+      yq -r 'map(select(.name=="BAO_ADDR")) | .[] .value' | tee /dev/stderr)
   [ "${value}" = "http://127.0.0.1:8200" ]
 }
 
@@ -84,7 +84,7 @@ load _helpers
       yq -r '.spec.template.spec.containers[0].env' | tee /dev/stderr)
 
   local value=$(echo $object |
-      yq -r 'map(select(.name=="VAULT_ADDR")) | .[] .value' | tee /dev/stderr)
+      yq -r 'map(select(.name=="BAO_ADDR")) | .[] .value' | tee /dev/stderr)
   [ "${value}" = "https://127.0.0.1:8200" ]
 }
 
@@ -407,7 +407,7 @@ load _helpers
 }
 
 #--------------------------------------------------------------------
-# VAULT_API_ADDR renders
+# BAO_API_ADDR renders
 
 @test "server/ha-StatefulSet: api addr renders to Pod IP by default" {
   cd `chart_dir`
@@ -418,7 +418,7 @@ load _helpers
       yq -r '.spec.template.spec.containers[0].env' | tee /dev/stderr)
 
   local value=$(echo $object |
-      yq -r 'map(select(.name=="VAULT_API_ADDR")) | .[] .value' | tee /dev/stderr)
+      yq -r 'map(select(.name=="BAO_API_ADDR")) | .[] .value' | tee /dev/stderr)
   [ "${value}" = 'http://$(POD_IP):8200' ]
 }
 
@@ -432,12 +432,12 @@ load _helpers
       yq -r '.spec.template.spec.containers[0].env' | tee /dev/stderr)
 
   local value=$(echo $object |
-      yq -r 'map(select(.name=="VAULT_API_ADDR")) | .[] .value' | tee /dev/stderr)
+      yq -r 'map(select(.name=="BAO_API_ADDR")) | .[] .value' | tee /dev/stderr)
   [ "${value}" = "https://example.com:8200" ]
 }
 
 #--------------------------------------------------------------------
-# VAULT_CLUSTER_ADDR renders
+# BAO_CLUSTER_ADDR renders
 
 @test "server/ha-StatefulSet: clusterAddr not set" {
   cd `chart_dir`
@@ -449,7 +449,7 @@ load _helpers
       yq -r '.spec.template.spec.containers[0].env' | tee /dev/stderr)
 
   local value=$(echo $object |
-      yq -r 'map(select(.name=="VAULT_CLUSTER_ADDR")) | .[] .value' | tee /dev/stderr)
+      yq -r 'map(select(.name=="BAO_CLUSTER_ADDR")) | .[] .value' | tee /dev/stderr)
   [ "${value}" = 'https://$(HOSTNAME).release-name-openbao-internal:8201' ]
 }
 
@@ -464,7 +464,7 @@ load _helpers
       yq -r '.spec.template.spec.containers[0].env' | tee /dev/stderr)
 
   local value=$(echo $object |
-      yq -r 'map(select(.name=="VAULT_CLUSTER_ADDR")) | .[] .value' | tee /dev/stderr)
+      yq -r 'map(select(.name=="BAO_CLUSTER_ADDR")) | .[] .value' | tee /dev/stderr)
   [ "${value}" = 'https://$(HOSTNAME).release-name-openbao-internal:8201' ]
 }
 
@@ -479,7 +479,7 @@ load _helpers
       yq -r '.spec.template.spec.containers[0].env' | tee /dev/stderr)
 
   local value=$(echo $object |
-      yq -r 'map(select(.name=="VAULT_CLUSTER_ADDR")) | .[] .value' | tee /dev/stderr)
+      yq -r 'map(select(.name=="BAO_CLUSTER_ADDR")) | .[] .value' | tee /dev/stderr)
   [ "${value}" = 'https://test.example.com:8201' ]
 }
 
@@ -494,7 +494,7 @@ load _helpers
       yq -r '.spec.template.spec.containers[0].env' | tee /dev/stderr)
 
   local value=$(echo $object |
-      yq -r 'map(select(.name=="VAULT_CLUSTER_ADDR")) | .[] .value' | tee /dev/stderr)
+      yq -r 'map(select(.name=="BAO_CLUSTER_ADDR")) | .[] .value' | tee /dev/stderr)
   [ "${value}" = 'http://$(HOSTNAME).release-name-openbao-internal:8201' ]
 }
 
@@ -515,7 +515,7 @@ local value=$(echo $rendered |
 }
 
 #--------------------------------------------------------------------
-# VAULT_RAFT_NODE_ID renders
+# BAO_RAFT_NODE_ID renders
 
 @test "server/ha-StatefulSet: raft node ID renders" {
   cd `chart_dir`
@@ -528,7 +528,7 @@ local value=$(echo $rendered |
       yq -r '.spec.template.spec.containers[0].env' | tee /dev/stderr)
 
   local value=$(echo $object |
-      yq -r 'map(select(.name=="VAULT_RAFT_NODE_ID")) | .[] .valueFrom.fieldRef.fieldPath' | tee /dev/stderr)
+      yq -r 'map(select(.name=="BAO_RAFT_NODE_ID")) | .[] .valueFrom.fieldRef.fieldPath' | tee /dev/stderr)
   [ "${value}" = "metadata.name" ]
 }
 

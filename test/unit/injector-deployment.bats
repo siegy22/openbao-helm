@@ -69,7 +69,7 @@ load _helpers
       --set 'injector.image.tag=1.2.3' \
       . | tee /dev/stderr |
       yq -r '.spec.template.spec.containers[0].image' | tee /dev/stderr)
-  [ "${actual}" = "foo:1.2.3" ]
+  [ "${actual}" = "docker.io/foo:1.2.3" ]
 
   local actual=$(helm template \
       --show-only templates/injector-deployment.yaml  \
@@ -77,7 +77,7 @@ load _helpers
       --set 'injector.image.tag=1.2.3' \
       . | tee /dev/stderr |
       yq -r '.spec.template.spec.containers[0].image' | tee /dev/stderr)
-  [ "${actual}" = "foo:1.2.3" ]
+  [ "${actual}" = "docker.io/foo:1.2.3" ]
 }
 
 @test "injector/deployment: default imagePullPolicy" {

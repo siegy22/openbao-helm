@@ -23,7 +23,7 @@ helm_install() {
 
     helm install -f ${values} \
         --name openbao \
-        ${BATS_TEST_DIRNAME}/../..
+        ${BATS_TEST_DIRNAME}/../../charts/openbao
 }
 
 # helm_install_ha installs the openbao chart using HA mode. This will source
@@ -40,7 +40,7 @@ helm_install_ha() {
         --name openbao \
         --set 'server.enabled=false' \
         --set 'serverHA.enabled=true' \
-        ${BATS_TEST_DIRNAME}/../..
+        ${BATS_TEST_DIRNAME}/../../charts/openbao
 }
 
 # wait for consul to be ready

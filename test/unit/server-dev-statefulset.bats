@@ -43,7 +43,7 @@ load _helpers
       --set 'server.dev.enabled=true' \
       . | tee /dev/stderr |
       yq -r '.spec.template.spec.containers[0].image' | tee /dev/stderr)
-  [ "${actual}" = "foo:1.2.3" ]
+  [ "${actual}" = "quay.io/foo:1.2.3" ]
 }
 
 @test "server/ha-StatefulSet: image tag defaults to latest" {
@@ -56,7 +56,7 @@ load _helpers
       --set 'server.dev.enabled=true' \
       . | tee /dev/stderr |
       yq -r '.spec.template.spec.containers[0].image' | tee /dev/stderr)
-  [ "${actual}" = "foo:latest" ]
+  [ "${actual}" = "quay.io/foo:latest" ]
 }
 
 #--------------------------------------------------------------------

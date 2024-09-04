@@ -52,7 +52,7 @@ load _helpers
       --show-only templates/tests/server-test.yaml  \
       . | tee /dev/stderr |
       yq -r '.metadata.name' | tee /dev/stderr)
-  [ "${actual}" = "vault-server-test" ]
+  [ "${actual}" = "openbao-server-test" ]
 }
 
 @test "server/standalone-server-test-Pod: release metadata.name foo" {
@@ -61,7 +61,7 @@ load _helpers
       --show-only templates/tests/server-test.yaml  \
       . | tee /dev/stderr |
       yq -r '.metadata.name' | tee /dev/stderr)
-  [ "${actual}" = "foo-vault-server-test" ]
+  [ "${actual}" = "foo-openbao-server-test" ]
 }
 
 @test "server/standalone-server-test-Pod: default server.standalone.enabled" {
@@ -134,7 +134,7 @@ load _helpers
       --set 'server.image.tag=1.2.3' \
       . | tee /dev/stderr |
       yq -r '.spec.containers[0].image' | tee /dev/stderr)
-  [ "${actual}" = "foo:1.2.3" ]
+  [ "${actual}" = "quay.io/foo:1.2.3" ]
 
   local actual=$(helm template \
       --show-only templates/tests/server-test.yaml  \
@@ -143,7 +143,7 @@ load _helpers
       --set 'server.standalone.enabled=true' \
       . | tee /dev/stderr |
       yq -r '.spec.containers[0].image' | tee /dev/stderr)
-  [ "${actual}" = "foo:1.2.3" ]
+  [ "${actual}" = "quay.io/foo:1.2.3" ]
 }
 
 @test "server/standalone-server-test-Pod: image tag defaults to latest" {
@@ -154,7 +154,7 @@ load _helpers
       --set 'server.image.tag=' \
       . | tee /dev/stderr |
       yq -r '.spec.containers[0].image' | tee /dev/stderr)
-  [ "${actual}" = "foo:latest" ]
+  [ "${actual}" = "quay.io/foo:latest" ]
 
   local actual=$(helm template \
       --show-only templates/tests/server-test.yaml  \
@@ -163,7 +163,7 @@ load _helpers
       --set 'server.standalone.enabled=true' \
       . | tee /dev/stderr |
       yq -r '.spec.containers[0].image' | tee /dev/stderr)
-  [ "${actual}" = "foo:latest" ]
+  [ "${actual}" = "quay.io/foo:latest" ]
 }
 
 @test "server/standalone-server-test-Pod: default imagePullPolicy" {
