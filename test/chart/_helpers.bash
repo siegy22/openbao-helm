@@ -3,7 +3,7 @@
 
 # chart_dir returns the directory for the chart
 chart_dir() {
-    echo ${BATS_TEST_DIRNAME}/../..
+    echo ${BATS_TEST_DIRNAME}/../../charts/openbao
 }
 
 # check_result checks if the specified test passed
