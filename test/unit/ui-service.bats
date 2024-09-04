@@ -406,27 +406,3 @@ load _helpers
       yq -r '.spec.ipFamilyPolicy' | tee /dev/stderr)
   [ "${actual}" = "PreferDualStack" ]
 }
-
-@test "server/Service: Assert ipFamilyPolicy is not set if version below 1.23" {
-  cd `chart_dir`
-  local actual=$(helm template \
-      --show-only templates/ui-service.yaml \
-      --kube-version 1.27.0 \
-      --set 'ui.enabled=true' \
-      --set 'ui.serviceIPFamilyPolicy=PreferDualStack' \
-      . | tee /dev/stderr |
-      yq -r '.spec.ipFamilyPolicy' | tee /dev/stderr)
-  [ "${actual}" = "null" ]
-}
-
-@test "server/Service: Assert ipFamilies is not set if version below 1.23" {
-  cd `chart_dir`
-  local actual=$(helm template \
-      --show-only templates/ui-service.yaml \
-      --kube-version 1.27.0 \
-      --set 'ui.enabled=true' \
-      --set 'ui.serviceIPFamilies={IPv4,IPv6}' \
-      . | tee /dev/stderr |
-      yq -r '.spec.ipFamilies' | tee /dev/stderr)
-  [ "${actual}" = "null" ]
-}

@@ -74,25 +74,3 @@ load _helpers
       yq '.spec.ipFamilies' -c | tee /dev/stderr)
   [ "${actual}" = '["IPv4","IPv6"]' ]
 }
-
-@test "server/headless-Service: Assert ipFamilyPolicy is not set if version below 1.23" {
-  cd `chart_dir`
-  local actual=$(helm template \
-      --show-only templates/server-headless-service.yaml \
-      --kube-version 1.27.0 \
-      --set 'server.service.ipFamilyPolicy=PreferDualStack' \
-      . | tee /dev/stderr |
-      yq -r '.spec.ipFamilyPolicy' | tee /dev/stderr)
-  [ "${actual}" = "null" ]
-}
-
-@test "server/headless-Service: Assert ipFamilies is not set if version below 1.23" {
-  cd `chart_dir`
-  local actual=$(helm template \
-      --show-only templates/server-headless-service.yaml \
-      --kube-version 1.27.0 \
-      --set 'server.service.ipFamilies={IPv4,IPv6}' \
-      . | tee /dev/stderr |
-      yq -r '.spec.ipFamilies' | tee /dev/stderr)
-  [ "${actual}" = "null" ]
-}

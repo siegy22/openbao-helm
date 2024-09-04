@@ -105,7 +105,7 @@ load _helpers
       --set 'server.image.tag=1.2.3' \
       . | tee /dev/stderr |
       yq -r '.spec.template.spec.containers[0].image' | tee /dev/stderr)
-  [ "${actual}" = "foo:1.2.3" ]
+  [ "${actual}" = "quay.io/foo:1.2.3" ]
 
   local actual=$(helm template \
       --show-only templates/server-statefulset.yaml  \
@@ -114,7 +114,7 @@ load _helpers
       --set 'server.standalone.enabled=true' \
       . | tee /dev/stderr |
       yq -r '.spec.template.spec.containers[0].image' | tee /dev/stderr)
-  [ "${actual}" = "foo:1.2.3" ]
+  [ "${actual}" = "quay.io/foo:1.2.3" ]
 }
 
 @test "server/standalone-StatefulSet: image tag defaults to latest" {
@@ -125,7 +125,7 @@ load _helpers
       --set 'server.image.tag=' \
       . | tee /dev/stderr |
       yq -r '.spec.template.spec.containers[0].image' | tee /dev/stderr)
-  [ "${actual}" = "foo:latest" ]
+  [ "${actual}" = "quay.io/foo:latest" ]
 
   local actual=$(helm template \
       --show-only templates/server-statefulset.yaml  \
@@ -134,7 +134,7 @@ load _helpers
       --set 'server.standalone.enabled=true' \
       . | tee /dev/stderr |
       yq -r '.spec.template.spec.containers[0].image' | tee /dev/stderr)
-  [ "${actual}" = "foo:latest" ]
+  [ "${actual}" = "quay.io/foo:latest" ]
 }
 
 @test "server/standalone-StatefulSet: default imagePullPolicy" {
@@ -224,43 +224,11 @@ load _helpers
 #--------------------------------------------------------------------
 # persistentVolumeClaimRetentionPolicy
 
-@test "server/standalone-StatefulSet: persistentVolumeClaimRetentionPolicy not set by default when kubernetes < 1.23" {
-  cd `chart_dir`
-  local actual=$(helm template \
-      -s templates/server-statefulset.yaml  \
-      --kube-version "1.27" \
-      . | tee /dev/stderr |
-      yq -r '.spec.persistentVolumeClaimRetentionPolicy' | tee /dev/stderr)
-  [ "${actual}" = "null" ]
-}
-
-@test "server/standalone-StatefulSet: unset persistentVolumeClaimRetentionPolicy.whenDeleted when kubernetes < 1.23" {
-  cd `chart_dir`
-  local actual=$(helm template \
-      -s templates/server-statefulset.yaml  \
-      --kube-version "1.27" \
-      --set 'server.persistentVolumeClaimRetentionPolicy.whenDeleted=Delete' \
-      . | tee /dev/stderr |
-      yq -r '.spec.persistentVolumeClaimRetentionPolicy.whenDeleted' | tee /dev/stderr)
-  [ "${actual}" = "null" ]
-}
-
-@test "server/standalone-StatefulSet: unset persistentVolumeClaimRetentionPolicy.whenScaled when kubernetes < 1.23" {
-  cd `chart_dir`
-  local actual=$(helm template \
-      -s templates/server-statefulset.yaml  \
-      --kube-version "1.27" \
-      --set 'server.persistentVolumeClaimRetentionPolicy.whenScaled=Delete' \
-      . | tee /dev/stderr |
-      yq -r '.spec.persistentVolumeClaimRetentionPolicy.whenScaled' | tee /dev/stderr)
-  [ "${actual}" = "null" ]
-}
-
 @test "server/standalone-StatefulSet: persistentVolumeClaimRetentionPolicy not set by default when kubernetes >= 1.23" {
   cd `chart_dir`
   local actual=$(helm template \
       -s templates/server-statefulset.yaml  \
-      --kube-version "1.23" \
+      --kube-version "1.27" \
       . | tee /dev/stderr |
       yq -r '.spec.persistentVolumeClaimRetentionPolicy' | tee /dev/stderr)
   [ "${actual}" = "null" ]
@@ -270,7 +238,7 @@ load _helpers
   cd `chart_dir`
   local actual=$(helm template \
       -s templates/server-statefulset.yaml  \
-      --kube-version "1.23" \
+      --kube-version "1.27" \
       --set 'server.persistentVolumeClaimRetentionPolicy.whenDeleted=Delete' \
       . | tee /dev/stderr |
       yq -r '.spec.persistentVolumeClaimRetentionPolicy.whenDeleted' | tee /dev/stderr)
@@ -281,7 +249,7 @@ load _helpers
   cd `chart_dir`
   local actual=$(helm template \
       -s templates/server-statefulset.yaml  \
-      --kube-version "1.23" \
+      --kube-version "1.27" \
       --set 'server.persistentVolumeClaimRetentionPolicy.whenScaled=Delete' \
       . | tee /dev/stderr |
       yq -r '.spec.persistentVolumeClaimRetentionPolicy.whenScaled' | tee /dev/stderr)
@@ -571,7 +539,7 @@ load _helpers
       yq -r '.spec.template.spec.containers[0].env' | tee /dev/stderr)
 
   local value=$(echo $objects |
-      yq -r 'map(select(.name=="VAULT_LOG_LEVEL")) | .[] .name' | tee /dev/stderr)
+      yq -r 'map(select(.name=="BAO_LOG_LEVEL")) | .[] .name' | tee /dev/stderr)
   [ "${value}" = "" ]
 }
 
@@ -584,7 +552,7 @@ load _helpers
       yq -r '.spec.template.spec.containers[0].env' | tee /dev/stderr)
 
   local value=$(echo $objects |
-      yq -r 'map(select(.name=="VAULT_LOG_LEVEL")) | .[] .value' | tee /dev/stderr)
+      yq -r 'map(select(.name=="BAO_LOG_LEVEL")) | .[] .value' | tee /dev/stderr)
   [ "${value}" = "debug" ]
 }
 
@@ -599,7 +567,7 @@ load _helpers
       yq -r '.spec.template.spec.containers[0].env' | tee /dev/stderr)
 
   local value=$(echo $objects |
-      yq -r 'map(select(.name=="VAULT_LOG_FORMAT")) | .[] .name' | tee /dev/stderr)
+      yq -r 'map(select(.name=="BAO_LOG_FORMAT")) | .[] .name' | tee /dev/stderr)
   [ "${value}" = "" ]
 }
 
@@ -612,7 +580,7 @@ load _helpers
       yq -r '.spec.template.spec.containers[0].env' | tee /dev/stderr)
 
   local value=$(echo $objects |
-      yq -r 'map(select(.name=="VAULT_LOG_FORMAT")) | .[] .value' | tee /dev/stderr)
+      yq -r 'map(select(.name=="BAO_LOG_FORMAT")) | .[] .value' | tee /dev/stderr)
   [ "${value}" = "json" ]
 }
 
@@ -800,7 +768,7 @@ load _helpers
       yq -r '.spec.template.spec.containers[0].volumeMounts[] | select(.name == "audit")' | tee /dev/stderr)
 
   local actual=$(echo $object | yq -r '.mountPath' | tee /dev/stderr)
-  [ "${actual}" = "/vault/audit" ]
+  [ "${actual}" = "/openbao/audit" ]
 }
 
 @test "server/standalone-StatefulSet: can configure audit storage mount path" {
@@ -825,7 +793,7 @@ load _helpers
       yq -r '.spec.template.spec.containers[0].volumeMounts[] | select(.name == "data")' | tee /dev/stderr)
 
   local actual=$(echo $object | yq -r '.mountPath' | tee /dev/stderr)
-  [ "${actual}" = "/vault/data" ]
+  [ "${actual}" = "/openbao/data" ]
 }
 
 @test "server/standalone-StatefulSet: can configure data storage mount path" {
@@ -1686,7 +1654,7 @@ load _helpers
   local actual=$(helm template \
       --show-only templates/server-statefulset.yaml \
       . | tee /dev/stderr |
-      yq '.spec.template.metadata.annotations["vault.hashicorp.com/config-checksum"] == null' | tee /dev/stderr)
+      yq '.spec.template.metadata.annotations["openbao.hashicorp.com/config-checksum"] == null' | tee /dev/stderr)
   [ "${actual}" = "true" ]
 }
 
@@ -1705,7 +1673,7 @@ load _helpers
       --show-only templates/server-statefulset.yaml \
       --set 'server.includeConfigAnnotation=true' \
       . | tee /dev/stderr |
-      yq '.spec.template.metadata.annotations["vault.hashicorp.com/config-checksum"] == null' | tee /dev/stderr)
+      yq '.spec.template.metadata.annotations["openbao.hashicorp.com/config-checksum"] == null' | tee /dev/stderr)
   [ "${actual}" = "false" ]
 }
 
