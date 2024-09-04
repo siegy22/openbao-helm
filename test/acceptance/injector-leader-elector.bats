@@ -13,9 +13,9 @@ load _helpers
     --wait \
     --timeout=5m \
     --set="injector.replicas=3" .
-  kubectl wait --for condition=Ready pod -l app.kubernetes.io/name=vault-agent-injector --timeout=5m
+  kubectl wait --for condition=Ready pod -l app.kubernetes.io/name=openbao-agent-injector --timeout=5m
 
-  pods=($(kubectl get pods -l app.kubernetes.io/name=vault-agent-injector -o json | jq -r '.items[] | .metadata.name'))
+  pods=($(kubectl get pods -l app.kubernetes.io/name=openbao-agent-injector -o json | jq -r '.items[] | .metadata.name'))
   [ "${#pods[@]}" == 3 ]
 
   leader=''

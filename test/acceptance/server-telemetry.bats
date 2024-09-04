@@ -19,7 +19,7 @@ load _helpers
 
   helm install \
     --wait \
-    --values ./test/acceptance/server-test/telemetry.yaml \
+    --values ../../test/acceptance/server-test/telemetry.yaml \
     "$(name_prefix)" .
 
   wait_for_running $(name_prefix)-0

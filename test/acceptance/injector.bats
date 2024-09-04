@@ -9,13 +9,13 @@ load _helpers
   kubectl create namespace acceptance
   kubectl config set-context --current --namespace=acceptance
 
-  kubectl create -f ./test/acceptance/injector-test/pg-deployment.yaml
+  kubectl create -f ../../test/acceptance/injector-test/pg-deployment.yaml
   sleep 5
   wait_for_ready $(kubectl get pod -l app=postgres -o jsonpath="{.items[0].metadata.name}")
 
   kubectl create secret generic test \
-    --from-file ./test/acceptance/injector-test/pgdump-policy.hcl \
-    --from-file ./test/acceptance/injector-test/bootstrap.sh
+    --from-file ../../test/acceptance/injector-test/pgdump-policy.hcl \
+    --from-file ../../test/acceptance/injector-test/bootstrap.sh
 
   kubectl label secret test app=openbao-agent-demo
 
@@ -39,7 +39,7 @@ load _helpers
   [ "${init_status}" == "true" ]
 
 
-  kubectl create -f ./test/acceptance/injector-test/job.yaml
+  kubectl create -f ../../test/acceptance/injector-test/job.yaml
   wait_for_complete_job "pgdump"
 }
 

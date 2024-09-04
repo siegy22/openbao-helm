@@ -35,7 +35,7 @@ load _helpers
   kubectl --namespace=acceptance wait --for=condition=Ready --timeout=5m pod -l app.kubernetes.io/name=openbao-csi-provider
 
   # Set up k8s auth and a kv secret.
-  cat ./test/acceptance/csi-test/openbao-policy.hcl | kubectl --namespace=acceptance exec -i openbao-0 -- openbao policy write kv-policy -
+  cat ../../test/acceptance/csi-test/openbao-policy.hcl | kubectl --namespace=acceptance exec -i openbao-0 -- bao policy write kv-policy -
   kubectl --namespace=acceptance exec openbao-0 -- bao auth enable kubernetes
   kubectl --namespace=acceptance exec openbao-0 -- sh -c 'bao write auth/kubernetes/config \
     kubernetes_host="https://$KUBERNETES_PORT_443_TCP_ADDR:443"'
@@ -46,8 +46,8 @@ load _helpers
     ttl=20m
   kubectl --namespace=acceptance exec openbao-0 -- bao kv put secret/kv1 bar1=hello1
 
-  kubectl --namespace=acceptance apply -f ./test/acceptance/csi-test/openbao-kv-secretproviderclass.yaml
-  kubectl --namespace=acceptance apply -f ./test/acceptance/csi-test/nginx.yaml
+  kubectl --namespace=acceptance apply -f ../../test/acceptance/csi-test/openbao-kv-secretproviderclass.yaml
+  kubectl --namespace=acceptance apply -f ../../test/acceptance/csi-test/nginx.yaml
   kubectl --namespace=acceptance wait --for=condition=Ready --timeout=5m pod nginx
 
   result=$(kubectl --namespace=acceptance exec nginx -- cat /mnt/secrets-store/bar)
