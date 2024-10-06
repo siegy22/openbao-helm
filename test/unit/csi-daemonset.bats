@@ -107,7 +107,7 @@ load _helpers
   [ "${actual}" = "PullPolicy1" ]
   local actual=$(echo $object |
       yq -r '.[1].image' | tee /dev/stderr)
-  [ "${actual}" = "Image2:0.0.2" ]
+  [ "${actual}" = "quay.io/Image2:0.0.2" ]
   local actual=$(echo $object |
       yq -r '.[1].imagePullPolicy' | tee /dev/stderr)
   [ "${actual}" = "PullPolicy2" ]
@@ -796,7 +796,7 @@ load _helpers
       yq -r '.spec.template.spec.containers[1].env' | tee /dev/stderr)
 
   local value=$(echo $object |
-      yq -r 'map(select(.name=="VAULT_LOG_LEVEL")) | .[] .value' | tee /dev/stderr)
+      yq -r 'map(select(.name=="BAO_LOG_LEVEL")) | .[] .value' | tee /dev/stderr)
   [ "${value}" = "error" ]
 }
 
@@ -810,7 +810,7 @@ load _helpers
       yq -r '.spec.template.spec.containers[1].env' | tee /dev/stderr)
 
   local value=$(echo $object |
-      yq -r 'map(select(.name=="VAULT_LOG_FORMAT")) | .[] .value' | tee /dev/stderr)
+      yq -r 'map(select(.name=="BAO_LOG_FORMAT")) | .[] .value' | tee /dev/stderr)
   [ "${value}" = "json" ]
 }
 
