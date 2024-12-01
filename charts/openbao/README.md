@@ -18,7 +18,7 @@ Official OpenBao Chart
 
 ## Requirements
 
-Kubernetes: `>= 1.27.0-0`
+Kubernetes: `>= 1.29.0-0`
 
 ## Values
 

@@ -216,21 +216,6 @@ load _helpers
   [ "${actual}" = "release-name-openbao" ]
 }
 
-@test "server/ingress: k8s 1.27.0 uses correct service format when not ha - yaml" {
-  cd `chart_dir`
-
-  local actual=$(helm template \
-      --show-only templates/server-ingress.yaml \
-      --set 'server.ingress.enabled=true' \
-      --set 'server.dev.enabled=false' \
-      --set 'server.ha.enabled=false' \
-      --set 'server.service.enabled=true' \
-      --kube-version 1.27.0 \
-      . | tee /dev/stderr |
-      yq -r '.spec.rules[0].http.paths[0].backend.service.name' | tee /dev/stderr)
-  [ "${actual}" = "release-name-openbao" ]
-}
-
 @test "server/ingress: uses regular service when not ha and activeService is true - yaml" {
   cd `chart_dir`
 
@@ -244,30 +229,4 @@ load _helpers
       . | tee /dev/stderr |
       yq -r '.spec.rules[0].http.paths[0].backend.service.name' | tee /dev/stderr)
   [ "${actual}" = "release-name-openbao" ]
-}
-
-@test "server/ingress: pathType is added to Kubernetes version == 1.27.0" {
-  cd `chart_dir`
-
-  local actual=$(helm template \
-      --show-only templates/server-ingress.yaml \
-      --set 'server.ingress.enabled=true' \
-      --set server.ingress.pathType=ImplementationSpecific \
-      --kube-version 1.27.0 \
-      . | tee /dev/stderr |
-      yq -r '.spec.rules[0].http.paths[0].pathType' | tee /dev/stderr)
-  [ "${actual}" = "ImplementationSpecific" ]
-}
-
-@test "server/ingress: pathType is added to Kubernetes versions > 1.19" {
-  cd `chart_dir`
-
-  local actual=$(helm template \
-      --show-only templates/server-ingress.yaml \
-      --set 'server.ingress.enabled=true' \
-      --set server.ingress.pathType=Prefix \
-      --kube-version 1.27.0 \
-      . | tee /dev/stderr |
-      yq -r '.spec.rules[0].http.paths[0].pathType' | tee /dev/stderr)
-  [ "${actual}" = "Prefix" ]
 }
