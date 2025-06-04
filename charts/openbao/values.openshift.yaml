@@ -13,14 +13,18 @@ injector:
 
   agentImage:
     registry: "quay.io"
-    repository: "openbao/openbao"
-    tag: "v2.2.2-ubi"
+    repository: "openbao/openbao-ubi"
+    tag: "2.2.2"
+    # Use UBI-based OpenBao image for better OpenShift compatibility
+    # See: https://openbao.org/docs/install/#container-registries
 
 server:
   image:
     registry: "quay.io"
-    repository: "openbao/openbao"
-    tag: "v2.2.2-ubi"
+    repository: "openbao/openbao-ubi"
+    tag: "2.2.2"
+    # Use UBI-based OpenBao image for better OpenShift compatibility
+    # See: https://openbao.org/docs/install/#container-registries
 
   readinessProbe:
     path: "/v1/sys/health?uninitcode=204"
