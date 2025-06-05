@@ -5,6 +5,35 @@ entries:
       charts.openshift.io/name: Openbao
     apiVersion: v2
     appVersion: v2.2.2
+    created: "2025-06-05T14:24:54.046020685Z"
+    description: Official OpenBao Chart
+    digest: 36cb898500f7b3c3f859071df7ceeb6d05fcb4ec07c3a250e80fc6c49aba0fd3
+    home: https://github.com/openbao/openbao-helm
+    icon: https://github.com/openbao/artwork/blob/main/color/openbao-color.svg
+    keywords:
+    - vault
+    - openbao
+    - security
+    - encryption
+    - secrets
+    - management
+    - automation
+    - infrastructure
+    kubeVersion: '>= 1.30.0-0'
+    maintainers:
+    - email: openbao-security@lists.lfedge.org
+      name: OpenBao
+      url: https://openbao.org
+    name: openbao
+    sources:
+    - https://github.com/openbao/openbao-helm
+    urls:
+    - https://github.com/openbao/openbao-helm/releases/download/openbao-0.13.1/openbao-0.13.1.tgz
+    version: 0.13.1
+  - annotations:
+      charts.openshift.io/name: Openbao
+    apiVersion: v2
+    appVersion: v2.2.2
     created: "2025-06-02T20:59:49.52954723Z"
     description: Official OpenBao Chart
     digest: 902c4a28edc5d7bed2c6cd2b80fb71807827ef270f770e72e356805a1b84c908
@@ -432,4 +461,4 @@ entries:
     urls:
     - https://github.com/openbao/openbao-helm/releases/download/openbao-0.2.0/openbao-0.2.0.tgz
     version: 0.2.0
-generated: "2025-06-02T20:59:49.529668747Z"
+generated: "2025-06-05T14:24:54.046114911Z"
