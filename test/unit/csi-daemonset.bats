@@ -101,7 +101,7 @@ load _helpers
 
   local actual=$(echo $object |
       yq -r '.[0].image' | tee /dev/stderr)
-  [ "${actual}" = "docker.io/Image1:0.0.1" ]
+  [ "${actual}" = "quay.io/Image1:0.0.1" ]
   local actual=$(echo $object |
       yq -r '.[0].imagePullPolicy' | tee /dev/stderr)
   [ "${actual}" = "PullPolicy1" ]
